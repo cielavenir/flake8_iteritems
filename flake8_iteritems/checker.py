@@ -25,5 +25,4 @@ class IteritemsChecker(object):
                 varName = node.func.value.id
             else:
                 varName = '{}'  # todo: better print str(node.func.value)
-            print('ITI010 %s.%s() needs to be migrated to six.%s(%s)' % (varName, node.func.attr, node.func.attr, varName))
             yield node.lineno, node.col_offset, 'ITI010 %s.%s() needs to be migrated to six.%s(%s)' % (varName, node.func.attr, node.func.attr, varName), type(self)
