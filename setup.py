@@ -15,7 +15,7 @@ setup(
     license='0BSD',
     author='cielavenir',
     author_email='cielartisan@gmail.com',
-    packages=['flake8_getiteritems'],
+    packages=['flake8_iteritems'],
     keywords='flake8',
     entry_points={'flake8.extension': ['ITI01 = flake8_iteritems.checker:IteritemsChecker']},
     zip_safe=False,
