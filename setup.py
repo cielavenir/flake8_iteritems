@@ -7,7 +7,7 @@ import sys
 
 setup(
     name='flake8_iteritems',
-    description='flake8_iteritems',
+    description='flake8 plugin to warn dict.iteritems()',
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
     version=versionContext['__version__'],
