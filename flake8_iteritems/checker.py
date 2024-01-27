@@ -25,9 +25,10 @@ class IteritemsChecker(object):
                 while isinstance(value, Attribute):
                     varName = '.' + value.attr + varName
                     value = value.value
-                if not isinstance(value, Name):
-                    continue
-                varName = value.id + varName
+                if isinstance(value, Name):
+                    varName = value.id + varName
+                else:
+                    varName = '[...]' + varName  # todo: better print str(value)
             if not isinstance(node.func.value, (Name, Attribute, Dict)):
                 continue
             if node.func.attr not in ('iteritems', 'iterkeys', 'itervalues',):

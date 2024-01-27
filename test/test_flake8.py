@@ -106,7 +106,7 @@ six.itervalues({})
     violations = list(IteritemsChecker(tree).run())
     assert len(violations) == 0
 
-def test_attribute():
+def test_attribute1():
     tree = parse('''
 class C:
     d = {}
@@ -116,12 +116,32 @@ C.d.iteritems()
     assert len(violations) == 1
     assert violations[0][2].startswith('ITI010 ')
 
-def test_positive_attribute():
+def test_positive_attribute1():
     tree = parse('''
 import six
 class C:
     d = {}
 six.iteritems(C.d)
+''')
+    violations = list(IteritemsChecker(tree).run())
+    assert len(violations) == 0
+
+def test_attribute2():
+    tree = parse('''
+class C:
+    d = {}
+C().d.iteritems()
+''')
+    violations = list(IteritemsChecker(tree).run())
+    assert len(violations) == 1
+    assert violations[0][2].startswith('ITI010 ')
+
+def test_positive_attribute2():
+    tree = parse('''
+import six
+class C:
+    d = {}
+six.iteritems(C().d)
 ''')
     violations = list(IteritemsChecker(tree).run())
     assert len(violations) == 0
