@@ -15,14 +15,23 @@ class IteritemsChecker(object):
             # if isinstance(node.func, Name) and node.func.id in ('iteritems', 'iterkeys', 'itervalues',):
             #     # no need to check top-level iteritems() etc, they are not bound methods
             #     pass
-            if isinstance(node.func, Attribute) and isinstance(node.func.value, (Name, Dict)) and node.func.attr in ('iteritems', 'iterkeys', 'itervalues',):
-                pass
+            if not isinstance(node.func, Attribute):
+                continue
+            if isinstance(node.func.value, Dict):
+                varName = '{}'  # todo: better print str(node.func.value)
             else:
+                varName = ''
+                value = node.func.value
+                while isinstance(value, Attribute):
+                    varName = '.' + value.attr + varName
+                    value = value.value
+                if not isinstance(value, Name):
+                    continue
+                varName = value.id + varName
+            if not isinstance(node.func.value, (Name, Attribute, Dict)):
+                continue
+            if node.func.attr not in ('iteritems', 'iterkeys', 'itervalues',):
                 continue
             if len(node.args) > 0:
                 continue
-            if isinstance(node.func.value, Name):
-                varName = node.func.value.id
-            else:
-                varName = '{}'  # todo: better print str(node.func.value)
             yield node.lineno, node.col_offset, 'ITI010 %s.%s() needs to be migrated to six.%s(%s)' % (varName, node.func.attr, node.func.attr, varName), type(self)
