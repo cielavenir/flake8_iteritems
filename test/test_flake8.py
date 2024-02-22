@@ -164,3 +164,19 @@ l[0].iteritems()
     violations = list(IteritemsChecker(tree).run())
     assert len(violations) == 1
     assert violations[0][2].startswith('ITI010 ')
+
+def test_expression1():
+    tree = parse('''
+(None or {}).iteritems()
+''')
+    violations = list(IteritemsChecker(tree).run())
+    assert len(violations) == 1
+    assert violations[0][2].startswith('ITI010 ')
+
+def test_expression2():
+    tree = parse('''
+({1:2} | {3:4}).iteritems()
+''')
+    violations = list(IteritemsChecker(tree).run())
+    assert len(violations) == 1
+    assert violations[0][2].startswith('ITI010 ')
