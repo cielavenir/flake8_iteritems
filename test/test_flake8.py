@@ -145,3 +145,22 @@ six.iteritems(C().d)
 ''')
     violations = list(IteritemsChecker(tree).run())
     assert len(violations) == 0
+
+def test_func():
+    tree = parse('''
+def f():
+    return {}
+f().iteritems()
+''')
+    violations = list(IteritemsChecker(tree).run())
+    assert len(violations) == 1
+    assert violations[0][2].startswith('ITI010 ')
+
+def test_getattr():
+    tree = parse('''
+l = [{}]
+l[0].iteritems()
+''')
+    violations = list(IteritemsChecker(tree).run())
+    assert len(violations) == 1
+    assert violations[0][2].startswith('ITI010 ')

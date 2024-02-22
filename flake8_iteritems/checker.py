@@ -1,5 +1,5 @@
 from .version import __version__
-from ast import walk, Call, Name, Dict, Attribute
+from ast import walk, Call, Name, Dict, Attribute, Subscript
 
 class IteritemsChecker(object):
     name = 'flake8_iteritems'
@@ -29,7 +29,7 @@ class IteritemsChecker(object):
                     varName = value.id + varName
                 else:
                     varName = '[...]' + varName  # todo: better print str(value)
-            if not isinstance(node.func.value, (Name, Attribute, Dict)):
+            if not isinstance(node.func.value, (Name, Attribute, Dict, Subscript, Call)):  # todo: maybe need to reconsider about this filtering
                 continue
             if node.func.attr not in ('iteritems', 'iterkeys', 'itervalues',):
                 continue
